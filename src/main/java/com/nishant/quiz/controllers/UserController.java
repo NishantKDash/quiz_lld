@@ -1,5 +1,6 @@
 package com.nishant.quiz.controllers;
 
+import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+
 	public void createUser() {
 		Scanner scanner = new Scanner(System.in);
 		try {
@@ -24,5 +26,15 @@ public class UserController {
 		} catch (Exception e) {
 			System.out.println(Ansi.ANSI_RED + "Error : " + e.getMessage() + Ansi.ANSI_RESET);
 		}
+	}
+
+	public List<UserEntity> getUsers() {
+		try {
+            List<UserEntity> users = userService.getUsers();
+			return users;
+		} catch (Exception e) {
+			System.out.println("Unable to fetch users. Please try again later");
+		}
+		return null;
 	}
 }

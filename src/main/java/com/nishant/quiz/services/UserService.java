@@ -1,5 +1,7 @@
 package com.nishant.quiz.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +25,10 @@ public class UserService {
 		userRepository.save(newUser);
 		return newUser;
 
+	}
+
+	public List<UserEntity> getUsers() {
+
+		return userRepository.findAll();
 	}
 }

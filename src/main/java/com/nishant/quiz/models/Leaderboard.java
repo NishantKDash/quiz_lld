@@ -2,6 +2,7 @@ package com.nishant.quiz.models;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,6 @@ public class Leaderboard {
 	@OneToOne
 	private GameEntity game;
 	
-	@OneToMany(mappedBy="leaderBoard")
+	@OneToMany(mappedBy="leaderBoard", cascade = CascadeType.ALL)
 	private List<PlayerPoints> board;
 }
