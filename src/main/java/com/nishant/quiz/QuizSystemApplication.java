@@ -99,9 +99,40 @@ public class QuizSystemApplication {
 					}
 
 					GameEntity newGame = gameController.createGame(gameName, finalPlayers, gameType);
-					System.out.println("Game successfully created");
+					if (newGame == null)
+						System.out.println("Unable to create a game");
+					else {
+						System.out.println("Game successfully created");
+						try {
+							gameController.playGame(newGame);
+
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 
 				} else {
+					System.out.println("Please select the game you want to play");
+					GameController gameController = context.getBean(GameController.class);
+					List<GameEntity> savedGames = gameController.getSavedGames();
+					for (int i = 0; i < savedGames.size(); i++) {
+						System.out.println((i + 1) + " -> " + savedGames.get(i).getName());
+					}
+
+					int gameOption = 0;
+					while (true) {
+						gameOption = Integer.valueOf(sc.nextLine());
+						if (gameOption < 1 || gameOption > savedGames.size())
+							System.out.println("Please enter a valid option");
+						else
+							break;
+					}
+					try {
+						gameController.playGame(savedGames.get(gameOption - 1));
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
 				}
 			}

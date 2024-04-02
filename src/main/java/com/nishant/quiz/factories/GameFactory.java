@@ -21,13 +21,14 @@ public class GameFactory {
 	@Autowired
 	private QuestionRepository questionRepository;
 
-	public GameEntity createGame(String name, GameType gameType, List<UserEntity> players, Leaderboard leaderBoard) {
+	public GameEntity createGame(String name, GameType gameType, List<UserEntity> players, Leaderboard leaderBoard) throws Exception {
 		GameBuilder gameBuilder = GameEntity.getGameBuilder();
 		if (gameType.equals(GameType.EASY)) {
 			GameSelectionStrategy gameSelectionStrategy = new EasyGameSelectionStrategy(questionRepository);
 			List<QuestionEntity> questions = gameSelectionStrategy.selectQuestions();
-			return gameBuilder.setName(name).setPlayers(players).setQuestions(questions).setLeaderBoard(leaderBoard)
+			GameEntity newGame = gameBuilder.setName(name).setPlayers(players).setQuestions(questions).setLeaderBoard(leaderBoard)
 					.build();
+			return newGame;
 		} else
 			return null;
 	}

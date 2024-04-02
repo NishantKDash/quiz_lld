@@ -17,7 +17,7 @@ public class QuestionService {
 	@Autowired
 	private QuestionRepository questionRepository;
 
-	public QuestionEntity createQuestion(String title, int questionType, int points, List<String> options) {
+	public QuestionEntity createQuestion(String title, int questionType, int points, List<String> options, int correctOption) {
 
 		QuestionEntity entity = new QuestionEntity();
 		entity.setTitle(title);
@@ -33,6 +33,7 @@ public class QuestionService {
 		}).collect(Collectors.toList());
 
 		entity.setOptions(newOptions);
+		entity.setAns(newOptions.get(correctOption));
 		questionRepository.save(entity);
 		return entity;
 

@@ -1,12 +1,16 @@
 package com.nishant.quiz.models;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.nishant.quiz.enums.GameState;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,21 +40,24 @@ public class GameEntity {
 
 	private LocalDateTime created;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "game_participants", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "player_id"))
 	private List<UserEntity> players;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "game_questions", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "question_id"))
 	private List<QuestionEntity> questions;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Leaderboard leaderboard;
 
 	@ManyToOne
 	private UserEntity winner;
 
 	private int turn;
+
+	@Enumerated(EnumType.STRING)
+	private GameState gameState;
 
 	public static GameBuilder getGameBuilder() {
 		return new GameBuilder();
@@ -75,8 +82,10 @@ public class GameEntity {
 			return this;
 		}
 
-		public GameBuilder setQuestions(List<QuestionEntity> questions) {
+		public GameBuilder setQuestions(List<QuestionEntity> questions) throws Exception {
+
 			this.questions = questions;
+
 			return this;
 		}
 
@@ -94,6 +103,7 @@ public class GameEntity {
 			newGame.setQuestions(questions);
 			newGame.setTurn(turn);
 			newGame.setWinner(winner);
+			newGame.setGameState(GameState.NEW);
 			return newGame;
 		}
 

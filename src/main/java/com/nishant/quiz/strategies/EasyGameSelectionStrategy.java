@@ -24,46 +24,31 @@ public class EasyGameSelectionStrategy implements GameSelectionStrategy {
 		List<QuestionEntity> easyQuestions = questionRepository.getEasyQuestions();
 		List<QuestionEntity> mediumQuestions = questionRepository.getMediumQuestions();
 		List<QuestionEntity> hardQuestions = questionRepository.getHardQuestions();
-		HashSet<Integer> easyIndices = indices(5, easyQuestions.size());
 
-		for (int ele : easyIndices) {
-			questions.add(easyQuestions.get(ele));
+		int eq = 0;
+		int mq = 0;
+		int hq = 0;
+
+		while (eq < 5) {
+			int index = (int) Math.random() * easyQuestions.size();
+			questions.add(easyQuestions.get(index));
+			easyQuestions.remove(index);
+			eq++;
 		}
-
-		for (int i = 0; i < mediumQuestions.size(); i++) {
-			int rand = (int) Math.floor(Math.random() * 10);
-			if (rand % 2 == 0) {
-				questions.add(mediumQuestions.get(i));
-
-			}
+		while (mq < 3) {
+			int index = (int) Math.random() * mediumQuestions.size();
+			questions.add(mediumQuestions.get(index));
+			mediumQuestions.remove(index);
+			mq++;
 		}
-
-		for (int i = 0; i < hardQuestions.size(); i++) {
-			int rand = (int) Math.floor(Math.random() * 10);
-			if (rand % 2 == 0) {
-				questions.add(hardQuestions.get(i));
-			}
+		while (hq < 1) {
+			int index = (int) Math.random() * hardQuestions.size();
+			questions.add(hardQuestions.get(index));
+			hardQuestions.remove(index);
+			hq++;
 		}
 
 		return questions;
-	}
-
-	public HashSet<Integer> indices(int n, int size) {
-
-		HashSet<Integer> set = new HashSet<>();
-		if (n >= size) {
-			while (size-- > 0)
-				set.add(size);
-			return set;
-		}
-		while (set.size() == n) {
-			int index = (int) Math.random() * size;
-			if (!set.contains(index))
-				set.add(index);
-		}
-
-		return set;
-
 	}
 
 }
